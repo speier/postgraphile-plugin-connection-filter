@@ -3,7 +3,7 @@
   "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
-    "allowJs": false,
+    "allowJs": true,
     "target": "ESNext",
     "module": "commonjs",
     "moduleResolution": "NodeNext",
