@@ -26,8 +26,17 @@ export const PgConnectionArgFilterForwardRelationsPlugin: GraphileConfig.Plugin 
     },
 
     schema: {
+      behaviorRegistry: {
+        add: {
+          filterBy: {
+            description: "Can we filter by the results of this relation?",
+            entities: ["pgCodecRelation"],
+          },
+        },
+      },
+
       entityBehavior: {
-        pgCodecRelation: "filter",
+        pgCodecRelation: "filterBy",
       },
 
       hooks: {
@@ -73,7 +82,7 @@ export const PgConnectionArgFilterForwardRelationsPlugin: GraphileConfig.Plugin 
             const foreignTable = relation.remoteResource; // Deliberate shadowing
 
             // Used to use 'read' behavior too
-            if (!build.behavior.pgCodecRelationMatches(relation, "filter")) {
+            if (!build.behavior.pgCodecRelationMatches(relation, "filterBy")) {
               continue;
             }
 

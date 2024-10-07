@@ -5,7 +5,7 @@ const { version } = require("../package.json");
 declare global {
   namespace GraphileBuild {
     interface BehaviorStrings {
-      "attribute:filter": true;
+      "attribute:filterBy": true;
     }
   }
 }
@@ -15,8 +15,21 @@ export const PgConnectionArgFilterAttributesPlugin: GraphileConfig.Plugin = {
   version,
 
   schema: {
+    behaviorRegistry: {
+      add: {
+        "attribute:filterBy": {
+          description: "Can we filter by this attribute",
+          entities: ["pgCodecAttribute"],
+        },
+        filterBy: {
+          description: "Can we filter by this attribute",
+          entities: ["pgCodecAttribute"],
+        },
+      },
+    },
+
     entityBehavior: {
-      pgCodecAttribute: "filter",
+      pgCodecAttribute: "filterBy",
     },
 
     hooks: {
@@ -44,7 +57,7 @@ export const PgConnectionArgFilterAttributesPlugin: GraphileConfig.Plugin = {
           if (
             !build.behavior.pgCodecAttributeMatches(
               [codec, attributeName],
-              "attribute:filter"
+              "attribute:filterBy"
             )
           ) {
             continue;

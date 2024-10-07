@@ -7,12 +7,29 @@ import type { FieldArgs } from "grafast";
 
 const { version } = require("../package.json");
 
+declare global {
+  namespace GraphileBuild {
+    interface BehaviorStrings {
+      filterBy: true;
+    }
+  }
+}
+
 export const PgConnectionArgFilterComputedAttributesPlugin: GraphileConfig.Plugin =
   {
     name: "PgConnectionArgFilterComputedAttributesPlugin",
     version,
 
     schema: {
+      behaviorRegistry: {
+        add: {
+          filterBy: {
+            description: "",
+            entities: ["pgResource"],
+          },
+        },
+      },
+
       entityBehavior: {
         pgResource: {
           inferred(behavior, entity, build) {
