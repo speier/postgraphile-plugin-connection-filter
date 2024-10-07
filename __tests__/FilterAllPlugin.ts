@@ -7,8 +7,11 @@ export const FilterAllPlugin: GraphileConfig.Plugin = {
   schema: {
     entityBehavior: {
       pgCodecAttribute: {
-        inferred(behavior, entity, build) {
-          return [behavior, "filterBy"];
+        inferred: {
+          before: ["PgIndexBehaviorsPlugin"],
+          callback(behavior, entity, build) {
+            return [behavior, "filterBy"];
+          },
         },
       },
     },
