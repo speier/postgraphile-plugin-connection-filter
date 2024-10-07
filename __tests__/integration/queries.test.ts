@@ -23,6 +23,7 @@ import { SchemaResult } from "graphile-build";
 import { makeWithPgClientViaPgClientAlreadyInTransaction } from "@dataplan/pg/adaptors/pg";
 import { exportSchemaAsString } from "graphile-export";
 import { importFromStringSync } from "module-from-string";
+import { FilterAllPlugin } from "../FilterAllPlugin";
 
 // TODO: remove this once Grafast gets it's planning under control :D
 jest.setTimeout(300000);
@@ -48,6 +49,7 @@ const createPostGraphileSchema = async (
       makeV4Preset(v4Options),
       ...(anotherPreset ? [anotherPreset] : []),
     ],
+    plugins: [FilterAllPlugin],
     pgServices: [
       {
         adaptor,
