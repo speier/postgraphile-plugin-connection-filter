@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as pg from "pg";
+import * as adaptor from "postgraphile/@dataplan/pg/adaptors/pg";
 
 import { promisify } from "util";
 import {
@@ -49,7 +50,7 @@ const createPostGraphileSchema = async (
     ],
     pgServices: [
       {
-        adaptor: "@dataplan/pg/adaptors/pg",
+        adaptor,
         name: "main",
         withPgClientKey: "withPgClient",
         pgSettingsKey: "pgSettings",

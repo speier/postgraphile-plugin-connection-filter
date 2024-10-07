@@ -1,4 +1,5 @@
 import * as pg from "pg";
+import * as adaptor from "postgraphile/@dataplan/pg/adaptors/pg";
 import { printSchemaOrdered, withPgClient } from "../../helpers";
 import { postgraphilePresetAmber } from "postgraphile/presets/amber";
 import { makeV4Preset, V4Options } from "postgraphile/presets/v4";
@@ -20,7 +21,7 @@ const createPostGraphileSchema = async (
     ],
     pgServices: [
       {
-        adaptor: "@dataplan/pg/adaptors/pg",
+        adaptor,
         name: "main",
         withPgClientKey: "withPgClient",
         pgSettingsKey: "pgSettings",
