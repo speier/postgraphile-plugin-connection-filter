@@ -26,6 +26,7 @@
     "url": "https://github.com/graphile-contrib/postgraphile-plugin-connection-filter/issues"
   },
   "dependencies": {
+    "@tsconfig/node20": "^20.1.4",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
@@ -34,7 +35,6 @@
     "@babel/preset-env": "^7.22.14",
     "@babel/preset-typescript": "^7.22.11",
     "@dataplan/pg": "^0.0.1-beta.26",
-    "@tsconfig/node16": "^1.0.3",
     "@types/jest": "29.5.0",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
