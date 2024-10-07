@@ -2,34 +2,13 @@ import type { PgConditionStep, PgCodecWithAttributes } from "@dataplan/pg";
 
 const { version } = require("../package.json");
 
-declare global {
-  namespace GraphileBuild {
-    interface BehaviorStrings {
-      "attribute:filterBy": true;
-    }
-  }
-}
-
 export const PgConnectionArgFilterAttributesPlugin: GraphileConfig.Plugin = {
   name: "PgConnectionArgFilterAttributesPlugin",
   version,
 
   schema: {
-    behaviorRegistry: {
-      add: {
-        "attribute:filterBy": {
-          description: "Can we filter by this attribute",
-          entities: ["pgCodecAttribute"],
-        },
-        filterBy: {
-          description: "Can we filter by this attribute",
-          entities: ["pgCodecAttribute"],
-        },
-      },
-    },
-
     entityBehavior: {
-      pgCodecAttribute: "filterBy",
+      pgCodecAttribute: "attribute:filterBy",
     },
 
     hooks: {
