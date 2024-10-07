@@ -80,10 +80,6 @@ export const PgConnectionArgFilterPlugin: GraphileConfig.Plugin = {
           description: "Can this function be filtered?",
           entities: ["pgResource"],
         },
-        filter: {
-          description: "Can this table be filtered?",
-          entities: ["pgResource"],
-        },
       },
     },
 
