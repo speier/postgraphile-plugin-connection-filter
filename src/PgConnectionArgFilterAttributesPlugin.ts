@@ -2,6 +2,14 @@ import type { PgConditionStep, PgCodecWithAttributes } from "@dataplan/pg";
 
 const { version } = require("../package.json");
 
+declare global {
+  namespace GraphileBuild {
+    interface BehaviorStrings {
+      "attribute:filter": true;
+    }
+  }
+}
+
 export const PgConnectionArgFilterAttributesPlugin: GraphileConfig.Plugin = {
   name: "PgConnectionArgFilterAttributesPlugin",
   version,

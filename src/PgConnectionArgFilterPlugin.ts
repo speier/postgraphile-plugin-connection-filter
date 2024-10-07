@@ -23,6 +23,14 @@ const isSuitableForFiltering = (
   (!codec.arrayOfCodec || isSuitableForFiltering(build, codec.arrayOfCodec)) &&
   (!codec.domainOfCodec || isSuitableForFiltering(build, codec.domainOfCodec));
 
+declare global {
+  namespace GraphileBuild {
+    interface BehaviorStrings {
+      filterProc: true;
+    }
+  }
+}
+
 export const PgConnectionArgFilterPlugin: GraphileConfig.Plugin = {
   name: "PgConnectionArgFilterPlugin",
   version,
@@ -66,13 +74,19 @@ export const PgConnectionArgFilterPlugin: GraphileConfig.Plugin = {
   */
 
   schema: {
+    behaviorRegistry: {
+      add: {
+        filterProc: {
+          description: "Can this function be filtered?",
+          entities: ["pgResource"],
+        },
+      },
+    },
+
     entityBehavior: {
       pgCodec: "filter",
       pgResource: {
-        provides: ["inferred"],
-        before: ["override"],
-        after: ["default"],
-        callback(behavior, entity, build) {
+        inferred(behavior, entity, build) {
           if (entity.parameters) {
             return [
               behavior,

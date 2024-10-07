@@ -15,10 +15,7 @@ export const PgConnectionArgFilterComputedAttributesPlugin: GraphileConfig.Plugi
     schema: {
       entityBehavior: {
         pgResource: {
-          provides: ["inferred"],
-          before: ["override"],
-          after: ["default"],
-          callback(behavior, entity, build) {
+          inferred(behavior, entity, build) {
             if (
               build.options.connectionFilterComputedColumns &&
               isComputedScalarAttributeResource(entity)
