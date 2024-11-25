@@ -41,8 +41,8 @@ export const PgConnectionArgFilterAttributesPlugin: GraphileConfig.Plugin = {
           ) {
             continue;
           }
-          const colSpec = { attributeName, attribute };
           const fieldName = inflection.attribute({ codec, attributeName });
+          const colSpec = { fieldName, attributeName, attribute };
           const digest = connectionFilterOperatorsDigest(attribute.codec);
           if (!digest) {
             continue;

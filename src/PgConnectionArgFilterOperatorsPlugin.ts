@@ -1216,7 +1216,8 @@ export interface OperatorSpec {
     $placeholderable: PlaceholderableStep,
     details: {
       // TODO: move $input and $placeholderable here too
-      fieldName: string;
+      fieldName: string | null;
+      operatorName: string;
     }
   ) => SQL;
   resolveType?: (type: GraphQLInputType) => GraphQLInputType;
@@ -1288,8 +1289,13 @@ export function makeApplyPlanFromOperatorSpec(
         if ($input.evalIs(undefined)) {
           return;
         }
-        const { attributeName, attribute, codec, expression } =
-          $where.extensions.pgFilterAttribute;
+        const {
+          fieldName: parentFieldName,
+          attributeName,
+          attribute,
+          codec,
+          expression,
+        } = $where.extensions.pgFilterAttribute;
 
         const sourceAlias = attribute
           ? attribute.expression
@@ -1341,7 +1347,8 @@ export function makeApplyPlanFromOperatorSpec(
             $where.placeholder($resolvedInput, inputCodec);
 
         const fragment = resolve(sqlIdentifier, sqlValue, $input, $where, {
-          fieldName,
+          fieldName: parentFieldName ?? null,
+          operatorName: fieldName,
         });
         $where.where(fragment);
       },

@@ -143,12 +143,7 @@ export const PgConnectionArgFilterComputedAttributesPlugin: GraphileConfig.Plugi
                     description: `Filter by the object’s \`${fieldName}\` field.`,
                     type: OperatorsType,
                     applyPlan: EXPORTABLE(
-                      (
-                        PgConditionStep,
-                        computedAttributeResource,
-                        functionResultCodec
-                      ) =>
-                        function (
+                      (PgConditionStep, computedAttributeResource, fieldName, functionResultCodec) => function (
                           $where: PgConditionStep<any>,
                           fieldArgs: FieldArgs
                         ) {
@@ -162,16 +157,13 @@ export const PgConnectionArgFilterComputedAttributesPlugin: GraphileConfig.Plugi
                           });
                           const $col = new PgConditionStep($where);
                           $col.extensions.pgFilterAttribute = {
+                            fieldName,
                             codec: functionResultCodec,
                             expression,
                           };
                           fieldArgs.apply($col);
                         },
-                      [
-                        PgConditionStep,
-                        computedAttributeResource,
-                        functionResultCodec,
-                      ]
+                      [PgConditionStep, computedAttributeResource, fieldName, functionResultCodec]
                     ),
                   }
                 ),

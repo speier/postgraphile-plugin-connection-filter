@@ -28,12 +28,14 @@ declare global {
     interface PgConditionStepExtensions {
       pgFilterAttribute?: /** Filtering a column */
       | {
+            fieldName: string;
             attributeName: string;
             attribute: PgCodecAttribute;
             codec?: never;
             expression?: never;
           }
         | /** The incoming alias _is_ the column */ {
+            fieldName?: string;
             attributeName?: never;
             attribute?: never;
             codec: PgCodec<any, any, any, any, any, any, any>;
