@@ -42,15 +42,13 @@ const middleware = postgraphile(DATABASE_URL, SCHEMAS, {
 Config example for PostGraphile v5 (beta), `graphile.config.mjs`:
 
 ```ts
-import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter'
+import ConnectionFilterPlugin from "postgraphile-plugin-connection-filter";
 
 const preset = {
-  extends: [
-    ConnectionFilterPlugin.PostGraphileConnectionFilterPreset
-  ]
-}
+  extends: [ConnectionFilterPlugin.PostGraphileConnectionFilterPreset],
+};
 
-export default preset
+export default preset;
 ```
 
 ## Performance and Security
