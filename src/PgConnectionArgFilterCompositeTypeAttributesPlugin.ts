@@ -38,7 +38,7 @@ export const PgConnectionArgFilterCompositeTypeAttributesPlugin: GraphileConfig.
             if (
               !build.behavior.pgCodecAttributeMatches(
                 [codec, attributeName],
-                "filter"
+                "attribute:filterBy"
               )
             ) {
               continue;

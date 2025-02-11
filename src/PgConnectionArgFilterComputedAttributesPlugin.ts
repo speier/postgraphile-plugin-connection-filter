@@ -7,18 +7,32 @@ import type { FieldArgs } from "grafast";
 
 const { version } = require("../package.json");
 
+declare global {
+  namespace GraphileBuild {
+    interface BehaviorStrings {
+      filterBy: true;
+    }
+  }
+}
+
 export const PgConnectionArgFilterComputedAttributesPlugin: GraphileConfig.Plugin =
   {
     name: "PgConnectionArgFilterComputedAttributesPlugin",
     version,
 
     schema: {
+      behaviorRegistry: {
+        add: {
+          filterBy: {
+            description: "",
+            entities: ["pgResource"],
+          },
+        },
+      },
+
       entityBehavior: {
         pgResource: {
-          provides: ["inferred"],
-          before: ["override"],
-          after: ["default"],
-          callback(behavior, entity, build) {
+          inferred(behavior, entity, build) {
             if (
               build.options.connectionFilterComputedColumns &&
               isComputedScalarAttributeResource(entity)
@@ -129,12 +143,7 @@ export const PgConnectionArgFilterComputedAttributesPlugin: GraphileConfig.Plugi
                     description: `Filter by the object’s \`${fieldName}\` field.`,
                     type: OperatorsType,
                     applyPlan: EXPORTABLE(
-                      (
-                        PgConditionStep,
-                        computedAttributeResource,
-                        functionResultCodec
-                      ) =>
-                        function (
+                      (PgConditionStep, computedAttributeResource, fieldName, functionResultCodec) => function (
                           $where: PgConditionStep<any>,
                           fieldArgs: FieldArgs
                         ) {
@@ -148,16 +157,13 @@ export const PgConnectionArgFilterComputedAttributesPlugin: GraphileConfig.Plugi
                           });
                           const $col = new PgConditionStep($where);
                           $col.extensions.pgFilterAttribute = {
+                            fieldName,
                             codec: functionResultCodec,
                             expression,
                           };
                           fieldArgs.apply($col);
                         },
-                      [
-                        PgConditionStep,
-                        computedAttributeResource,
-                        functionResultCodec,
-                      ]
+                      [PgConditionStep, computedAttributeResource, fieldName, functionResultCodec]
                     ),
                   }
                 ),

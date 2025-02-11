@@ -1213,7 +1213,12 @@ export interface OperatorSpec {
     sqlIdentifier: SQL,
     sqlValue: SQL,
     $input: InputStep,
-    $placeholderable: PlaceholderableStep
+    $placeholderable: PlaceholderableStep,
+    details: {
+      // TODO: move $input and $placeholderable here too
+      fieldName: string | null;
+      operatorName: string;
+    }
   ) => SQL;
   resolveType?: (type: GraphQLInputType) => GraphQLInputType;
 }
@@ -1265,6 +1270,7 @@ export function makeApplyPlanFromOperatorSpec(
   return EXPORTABLE(
     (
       connectionFilterAllowNullInput,
+      fieldName,
       lambda,
       resolve,
       resolveInput,
@@ -1283,8 +1289,13 @@ export function makeApplyPlanFromOperatorSpec(
         if ($input.evalIs(undefined)) {
           return;
         }
-        const { attributeName, attribute, codec, expression } =
-          $where.extensions.pgFilterAttribute;
+        const {
+          fieldName: parentFieldName,
+          attributeName,
+          attribute,
+          codec,
+          expression,
+        } = $where.extensions.pgFilterAttribute;
 
         const sourceAlias = attribute
           ? attribute.expression
@@ -1335,11 +1346,15 @@ export function makeApplyPlanFromOperatorSpec(
       */
             $where.placeholder($resolvedInput, inputCodec);
 
-        const fragment = resolve(sqlIdentifier, sqlValue, $input, $where);
+        const fragment = resolve(sqlIdentifier, sqlValue, $input, $where, {
+          fieldName: parentFieldName ?? null,
+          operatorName: fieldName,
+        });
         $where.where(fragment);
       },
     [
       connectionFilterAllowNullInput,
+      fieldName,
       lambda,
       resolve,
       resolveInput,

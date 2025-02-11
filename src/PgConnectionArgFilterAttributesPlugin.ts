@@ -8,7 +8,7 @@ export const PgConnectionArgFilterAttributesPlugin: GraphileConfig.Plugin = {
 
   schema: {
     entityBehavior: {
-      pgCodecAttribute: "filter",
+      pgCodecAttribute: "attribute:filterBy",
     },
 
     hooks: {
@@ -36,13 +36,13 @@ export const PgConnectionArgFilterAttributesPlugin: GraphileConfig.Plugin = {
           if (
             !build.behavior.pgCodecAttributeMatches(
               [codec, attributeName],
-              "attribute:filter"
+              "attribute:filterBy"
             )
           ) {
             continue;
           }
-          const colSpec = { attributeName, attribute };
           const fieldName = inflection.attribute({ codec, attributeName });
+          const colSpec = { fieldName, attributeName, attribute };
           const digest = connectionFilterOperatorsDigest(attribute.codec);
           if (!digest) {
             continue;
